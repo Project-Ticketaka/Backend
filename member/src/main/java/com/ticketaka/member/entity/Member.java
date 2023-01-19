@@ -1,40 +1,44 @@
 package com.ticketaka.member.entity;
 
-import lombok.Data;
-import org.springframework.lang.Nullable;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
-@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(length = 20, nullable = false)
+    @Column(name = "member_name", length = 20, nullable = false)
     private String name;
 
-    @Column(length = 30, nullable = false)
+    @Column( name ="member_email", length = 30, nullable = false,unique = true)
     private String email;
 
-    @Column(length = 20, nullable = false)
+    @Column(name = "member_password", length = 20, nullable = false)
     private String password;
 
-    @Column(nullable = false)
-    private Date date;
+    @Column(name = "member_birth", nullable = false)
+    private LocalDate birth;
 
-    @Column(length = 20,nullable = false)
+    @Column(name = "member_phone", length = 20,nullable = false)
     private String phone;
 
-    @Column(length=4, nullable = false)
-    private String gender;
+    @Column(name= "member_gender", length=8, nullable = false)
+//    @Enumerated(EnumType.STRING)
+    private String gender; // enum 으로 바꿔야겟다
 
-    @Column(nullable = false )
+    @Column(name = "member_isadult", nullable = false )
     private Boolean isadult;
 
-    @Column(nullable = false)
-    private String refresh_token;
+//    @Column(nullable = false)
+//    private String refresh_token;
+
 }

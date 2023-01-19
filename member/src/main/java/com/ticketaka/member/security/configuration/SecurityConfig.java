@@ -1,6 +1,7 @@
 package com.ticketaka.member.security.configuration;
 
 
+import com.ticketaka.member.security.jwt.JwtAuthenticationFilter;
 import com.ticketaka.member.security.jwt.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -24,11 +25,16 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .httpBasic().disable()
+                .formLogin().disable()
                 .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // jwt 를 사용하기 때문에 세션사용 X
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)// jwt 를 사용하기 때문에 세션사용 X
                 .and()
                 .authorizeRequests()
                 .antMatchers("/members/login").permitAll()
+                .antMatchers("/member/signup").permitAll()
+                .antMatchers("/main/**").permitAll()
+                .antMatchers("/performance").permitAll()
+                .antMatchers("/performance/session").permitAll()
                 .anyRequest().authenticated() // 그 밖에 요청은 모두 인증정보가 있어야 함
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtils), UsernamePasswordAuthenticationFilter.class);

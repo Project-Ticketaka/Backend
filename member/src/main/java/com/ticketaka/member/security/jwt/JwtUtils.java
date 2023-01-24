@@ -15,9 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -35,19 +33,19 @@ public class JwtUtils {
 
 
     // JWT 와 관련된 메서드들을 제공하는 Class
-    public TokenInfo generateToken(Authentication authentication){
+    public TokenInfo generateToken(Long memberId){
         // 권한 가져오기
-        String authorities = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
-
         long now = (new Date(System.currentTimeMillis())).getTime();
 
+        // payload 에 넣을값 생성
+        Map<String, String> payload = new HashMap<>();
+        payload.put("memberId", String.valueOf(memberId));
+        payload.put("auth","USER");
         // Access Token 생성 , 만료시간 30분 30*60*60
         Date accessTokenExpiresIn = new Date(now + 108000000);
+
         String accessToken = Jwts.builder()
-                .setSubject(authentication.getName())
-                .claim("auth", authorities)
+                .setClaims(payload)
                 .setExpiration(accessTokenExpiresIn)
                 .signWith(key,SignatureAlgorithm.HS256)
                 .compact();
@@ -67,18 +65,18 @@ public class JwtUtils {
     public Authentication getAuthentication(String accessToken) {
         // 토큰 복호화
         Claims claims = parseClaims(accessToken);
-
-        if (claims.get("auth") == null) {
+        log.info(accessToken);
+        if (claims.get("email") == null) {
             throw new RuntimeException("권한 정보가 없는 토큰입니다.");
         }
 
-        // 클레임에서 권한 정보 가져오기
+         //클레임에서 권한 정보 가져오기
         Collection<? extends GrantedAuthority> authorities =
                 Arrays.stream(claims.get("auth").toString().split(","))
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
 
-        // UserDetails 객체를 만들어서 Authentication 리턴
+         //UserDetails 객체를 만들어서 Authentication 리턴
         UserDetails principal = new User(claims.getSubject(), "", authorities);
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }

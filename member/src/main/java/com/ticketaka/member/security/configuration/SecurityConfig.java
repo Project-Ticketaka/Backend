@@ -30,7 +30,7 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)// jwt 를 사용하기 때문에 세션사용 X
                 .and()
                 .authorizeRequests()
-                .antMatchers("/members/login").permitAll()
+                .antMatchers("/member/login").permitAll()
                 .antMatchers("/member/signup").permitAll()
                 .antMatchers("/main/**").permitAll()
                 .antMatchers("/performance").permitAll()

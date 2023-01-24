@@ -1,6 +1,7 @@
 package com.ticketaka.member.entity;
 
 import lombok.*;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -9,7 +10,7 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@Getter
 public class Member {
 
     @Id
@@ -37,6 +38,9 @@ public class Member {
 
     @Column(name = "member_isadult", nullable = false )
     private Boolean isadult;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
 //    @Column(nullable = false)
 //    private String refresh_token;

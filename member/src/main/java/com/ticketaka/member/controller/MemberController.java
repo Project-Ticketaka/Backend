@@ -18,21 +18,22 @@ public class MemberController {
 
     private final MemberService memberService;
 
-//    @PostMapping("/login")
-//    public ResponseEntity<TokenInfo> login(@RequestBody LoginRequestDto dto){
-//        return memberService.login(dto);
-//    }
+    @PostMapping("/login")
+    public ResponseEntity<TokenInfo> login(@RequestBody LoginRequestDto dto){
+        return memberService.login(dto);
+    }
+    @PostMapping("/signup")
+    public ResponseEntity<String> signUp(@RequestBody SignupRequestDto dto){
+        ResponseEntity<String> response = memberService.signUp(dto);
+        return response;
+    }
 
     @GetMapping("/login")
     public String checkDuplicateMember(){
         return "duplicate";
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<String> signUp(@RequestBody SignupRequestDto dto){
-        ResponseEntity<String> res = memberService.signUp(dto);
-        return res;
-    }
+
 
     @PostMapping("logout")
     public String logout(){

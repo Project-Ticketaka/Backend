@@ -1,4 +1,4 @@
-package com.ticketaka.member.dto;
+package com.ticketaka.member.dto.request;
 
 
 import lombok.Getter;
@@ -10,4 +10,5 @@ public class LoginRequestDto {
 
     private String email;
     private String password;
+
 }

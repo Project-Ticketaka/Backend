@@ -1,4 +1,4 @@
-package com.ticketaka.member.dto;
+package com.ticketaka.member.dto.request;
 
 import com.ticketaka.member.entity.Gender;
 import com.ticketaka.member.entity.Member;

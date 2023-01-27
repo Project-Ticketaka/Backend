@@ -37,6 +37,9 @@ dependencies {
 
 	//redis 사용을 위한 라이브러리 추가
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+	//toDto, toEntity 변환을 위한 map-structure 라이브러리
+	implementation 'org.mapstruct:mapstruct-processor:1.4.2.Final'
 }
 
 tasks.named('test') {

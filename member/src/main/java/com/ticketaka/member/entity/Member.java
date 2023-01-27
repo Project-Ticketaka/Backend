@@ -1,5 +1,6 @@
 package com.ticketaka.member.entity;
 
+import com.ticketaka.member.dto.response.InfoResponseDto;
 import lombok.*;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -44,5 +45,14 @@ public class Member {
 
 //    @Column(nullable = false)
 //    private String refresh_token;
+
+    public InfoResponseDto toInfoResponseDto(){
+        return InfoResponseDto.builder()
+                .name(name)
+                .email(email)
+                .phone(phone)
+                .birth(birth)
+                .build();
+    }
 
 }

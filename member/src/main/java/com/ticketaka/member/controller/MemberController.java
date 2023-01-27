@@ -1,14 +1,16 @@
 package com.ticketaka.member.controller;
 
 
-import com.ticketaka.member.dto.LoginRequestDto;
-import com.ticketaka.member.dto.SignupRequestDto;
-import com.ticketaka.member.dto.TokenInfo;
+import com.ticketaka.member.dto.request.LoginRequestDto;
+import com.ticketaka.member.dto.request.SignupRequestDto;
+import com.ticketaka.member.dto.response.InfoResponseDto;
 import com.ticketaka.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/member")
@@ -19,7 +21,7 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/login")
-    public ResponseEntity<TokenInfo> login(@RequestBody LoginRequestDto dto){
+    public ResponseEntity<String> login(@RequestBody LoginRequestDto dto){
         return memberService.login(dto);
     }
     @PostMapping("/signup")
@@ -27,20 +29,29 @@ public class MemberController {
         ResponseEntity<String> response = memberService.signUp(dto);
         return response;
     }
-
+    // 이메일 중복 체크
     @GetMapping("/login")
-    public String checkDuplicateMember(){
+    public String checkDuplicateMember(@RequestParam String email){
+        memberService.checkDuplicateMember(email);
         return "duplicate";
     }
 
+    @PostMapping(path = "/logout",headers = "HEADER")
+    public ResponseEntity<String> logout(@RequestHeader Map<String, String> header){
+        return memberService.logout(header);
 
-
-    @PostMapping("logout")
-    public String logout(){
-        return "logout";
     }
-    @GetMapping("/adult")
-    public String checkAdult(){
+    @GetMapping(path="/info", headers= "HEADER")
+    public ResponseEntity<InfoResponseDto> info(@RequestHeader Map<String, String> header){
+        log.info("called Info");
+        return memberService.getInfo(header);
+    }
+
+
+
+    @GetMapping(path = "/adult",headers = "HEADER")
+    public String checkAdult(@RequestHeader Map<String, String> header){
+        
         return "adult";
     }
 

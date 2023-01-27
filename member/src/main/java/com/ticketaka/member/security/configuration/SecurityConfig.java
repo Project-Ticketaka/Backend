@@ -3,6 +3,7 @@ package com.ticketaka.member.security.configuration;
 
 import com.ticketaka.member.security.jwt.JwtAuthenticationFilter;
 import com.ticketaka.member.security.jwt.JwtUtils;
+import com.ticketaka.member.service.RedisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtUtils jwtUtils;
+    private final RedisService redisService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -37,7 +39,7 @@ public class SecurityConfig {
                 .antMatchers("/performance/session").permitAll()
                 .anyRequest().authenticated() // 그 밖에 요청은 모두 인증정보가 있어야 함
                 .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtUtils), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtAuthenticationFilter(jwtUtils,redisService), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
